@@ -72,8 +72,76 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2540817853737639666, guid: 781f16eac23383a48addb9cea477e550, type: 3}
+    - target: {fileID: 5499502755988617199, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: m_Radius
+      value: 0.01976544
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499502755988617199, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: clips.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 9ac6b2af57212e945a8425725a0a6c8e, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 785d717276a093046a15f12a97d659e3, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: fa738cc5065549f40bfe2eb66202f6ff, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: e6bba4119443d2b4a8452b9b94fd8742, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[4]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 4a334666f09f2b64bbfab861162d6cb8, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 0bbcf3c335764d640a11351da0194499, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 1b9648d59c24bcf4ea6747df7f68e8f9, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[7]'
+      value: 
+      objectReference: {fileID: 8300000, guid: c59de54d4f7aeeb45853cbabb1eacf23, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[8]'
+      value: 
+      objectReference: {fileID: 8300000, guid: e1a24e1dbc691e042949b1e057f17d3d, type: 3}
+    - target: {fileID: 7612701094386493659, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      propertyPath: 'clips.Array.data[9]'
+      value: 
+      objectReference: {fileID: 8300000, guid: c6f9d5ebeeaa5834881702713c02a77d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2202761260228638249, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1878338003833637803}
   m_SourcePrefab: {fileID: 100100000, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+--- !u!1 &5265091365890871118 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2202761260228638249, guid: d433c326074a6c24fa65dfcfd6e5dcac, type: 3}
+  m_PrefabInstance: {fileID: 6305209909416671591}
+  m_PrefabAsset: {fileID: 0}
+--- !u!81 &1878338003833637803
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5265091365890871118}
+  m_Enabled: 1
