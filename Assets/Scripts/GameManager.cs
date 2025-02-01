@@ -1,21 +1,33 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UIElements;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // scripts
     public static GameManager instance;
     CameraController cameraController;
+    private Ghost[] ghosts;
 
+    //UI
+    [SerializeField] TMP_Text stopWatchTimer;
+
+
+    // Class Variables
+    bool stopWatchTimerActive = false;
     Rigidbody rb;
     AudioSource audioSource;
     AudioResource clip;
     [SerializeField] float speed;
-    int score = 0;
+    int score = 5;
     int health = 3;
     bool isAlive = true;
-    bool hasKey = false;
+    bool hasKey = true;
+    bool hasWatch = false;
     Renderer rend;
     Color ogColor;
 
@@ -43,12 +55,19 @@ public class GameManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         rend = GetComponent<Renderer>();
         ogColor = rend.material.color;
+        ghosts = FindObjectsByType<Ghost>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
     }
 
 
     void Update()
     {
-        GameOver();
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            if (hasWatch)
+            {
+                StartCoroutine(TemporaryStop());
+            }
+        }
     }
 
 
@@ -58,6 +77,35 @@ public class GameManager : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
         rb.AddForce(movement * speed);
+    }
+
+
+
+    IEnumerator TemporaryStop()
+    {
+        stopWatchTimerActive = true;
+
+        foreach (Ghost ghost in ghosts)
+        {
+            ghost.StopMovement();
+        }
+
+        stopWatchTimer.gameObject.SetActive(true);
+        float countdown = 4f;
+
+        while (countdown > 0)
+        {
+            countdown -= Time.deltaTime;
+            stopWatchTimer.text = countdown.ToString("F1");
+            yield return null;
+        }
+        stopWatchTimer.gameObject.SetActive(false);
+
+        foreach (Ghost ghost in ghosts)
+        {
+            ghost.ResumeMovement();
+        }
+        stopWatchTimerActive = false;
     }
 
 
@@ -77,6 +125,10 @@ public class GameManager : MonoBehaviour
                 {
                     health--;
                     Debug.Log(health);
+                    if (health == 0)
+                    {
+                        GameOver();
+                    }
                     audioSource.clip = clips[6];
                     audioSource.Play();
                 }
@@ -93,6 +145,7 @@ public class GameManager : MonoBehaviour
             case "Death":
                 //camera stops following the player if they leave the bounds or fall out
                 health = 0;
+                GameOver();
                 cameraController.followPlayer = false;
                 gameObject.GetComponent<SphereCollider>().enabled = false;
                 Destroy(gameObject, 2f);
@@ -160,6 +213,8 @@ public class GameManager : MonoBehaviour
                 gameObject.transform.position = new Vector3(-3f, 0.6f, 3.5f);
                 break;
             case "Stop_Watch":
+                hasWatch = true;
+                Destroy(other.gameObject);
                 audioSource.clip = clips[7];
                 audioSource.Play();
                 break;
@@ -173,6 +228,19 @@ public class GameManager : MonoBehaviour
                 audioSource.clip = clips[2];
                 audioSource.Play();
                 break;
+            case "Next_Level":
+                if (score == 5)
+                {
+                    SceneManager.LoadScene("LevelTwo");
+                    gameObject.transform.position = new Vector3(5.97991943f, 0.855957031f, -18.7200012f);
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+                else
+                {
+                    Debug.Log("I Need To Find My Other Bones Before Leaving");
+                }
+                break;
 
         }
     }
@@ -183,7 +251,7 @@ public class GameManager : MonoBehaviour
         switch (other.tag)
         {
             case "Slime":
-                rb.AddForce(-rb.linearVelocity.normalized * 4.5f, ForceMode.Acceleration);
+                rb.AddForce(-rb.linearVelocity.normalized * 4.8f, ForceMode.Acceleration);
                 break;
             case "Spider_Web":
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 8f, rb.linearVelocity.z);
@@ -196,11 +264,8 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
-        if (health == 0)
-        {
-            isAlive = false;
-            speed = 0;
-        }
+        isAlive = false;
+        speed = 0;
     }
 
     void ResetColor()

@@ -18,6 +18,7 @@ TagManager:
   - Right_Door_Enter
   - Tombstone_TP
   - Stop_Watch
+  - Next_Level
   layers:
   - Default
   - TransparentFX
