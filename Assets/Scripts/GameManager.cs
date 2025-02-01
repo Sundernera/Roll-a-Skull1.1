@@ -5,6 +5,8 @@ using UnityEngine.Audio;
 using UnityEngine.UIElements;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +23,6 @@ public class GameManager : MonoBehaviour
     bool stopWatchTimerActive = false;
     Rigidbody rb;
     AudioSource audioSource;
-    AudioResource clip;
     [SerializeField] float speed;
     int score = 5;
     int health = 3;
@@ -271,5 +272,4 @@ public class GameManager : MonoBehaviour
     void ResetColor()
     {
         rend.material.color = ogColor;
-    }
-}
+    }}
