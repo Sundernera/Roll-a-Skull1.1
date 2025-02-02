@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     CameraController cameraController;
     private Ghost[] ghosts;
+    UIScript uiScript;
 
     //UI
     [SerializeField] TMP_Text stopWatchTimer;
@@ -21,14 +22,16 @@ public class GameManager : MonoBehaviour
 
     // Class Variables
     bool stopWatchTimerActive = false;
+    bool isSpeedBoosted = false;   
     Rigidbody rb;
     AudioSource audioSource;
     [SerializeField] float speed;
-    int score = 5;
-    int health = 3;
+    public int score = 5;
+    public int health = 3;
     bool isAlive = true;
-    bool hasKey = true;
-    bool hasWatch = false;
+    public bool hasKey = true;
+    public bool hasWatch = false;
+    public bool hasCoffee = false;
     Renderer rend;
     Color ogColor;
 
@@ -52,7 +55,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>(); 
+        cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
         audioSource = GetComponent<AudioSource>();
         rend = GetComponent<Renderer>();
         ogColor = rend.material.color;
@@ -62,11 +65,20 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.E))
+        if (Input.GetKeyUp(KeyCode.E) && !stopWatchTimerActive)
         {
             if (hasWatch)
             {
                 StartCoroutine(TemporaryStop());
+                uiScript.UpdateUI();
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.Q) && !isSpeedBoosted)
+        {
+            if (hasCoffee)
+            {
+                StartCoroutine(TemporarySpeed(6f, 4f));
+                uiScript.UpdateUI();
             }
         }
     }
@@ -79,7 +91,6 @@ public class GameManager : MonoBehaviour
         Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
         rb.AddForce(movement * speed);
     }
-
 
 
     IEnumerator TemporaryStop()
@@ -109,6 +120,18 @@ public class GameManager : MonoBehaviour
         stopWatchTimerActive = false;
     }
 
+    IEnumerator TemporarySpeed(float newSpeed, float duration)
+    {
+        isSpeedBoosted = true;
+        float ogSpeed = speed;
+        speed = newSpeed;
+
+        yield return new WaitForSeconds(duration);
+
+        speed = ogSpeed;
+        isSpeedBoosted = false;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -120,11 +143,13 @@ public class GameManager : MonoBehaviour
                 Destroy(other.gameObject);
                 audioSource.clip = clips[10];
                 audioSource.Play();
+                uiScript.UpdateUI();
                 break;
             case "Ghost":
                 if (isAlive)
                 {
                     health--;
+                    uiScript.UpdateUI();
                     Debug.Log(health);
                     if (health == 0)
                     {
@@ -139,6 +164,7 @@ public class GameManager : MonoBehaviour
                 {
                     health++;
                     Destroy(other.gameObject);
+                    uiScript.UpdateUI();
                     audioSource.clip = clips[1];
                     audioSource.Play();
                 }
@@ -150,6 +176,7 @@ public class GameManager : MonoBehaviour
                 cameraController.followPlayer = false;
                 gameObject.GetComponent<SphereCollider>().enabled = false;
                 Destroy(gameObject, 2f);
+                uiScript.UpdateUI();
                 audioSource.clip = clips[6];
                 audioSource.Play();
                 break;
@@ -165,6 +192,7 @@ public class GameManager : MonoBehaviour
             case "Key":
                 hasKey = true;
                 Destroy(other.gameObject);
+                uiScript.UpdateUI();
                 audioSource.clip = clips[0];
                 audioSource.Play();
                 break;
@@ -216,6 +244,7 @@ public class GameManager : MonoBehaviour
             case "Stop_Watch":
                 hasWatch = true;
                 Destroy(other.gameObject);
+                uiScript.UpdateUI();
                 audioSource.clip = clips[7];
                 audioSource.Play();
                 break;
