@@ -19,6 +19,7 @@ TagManager:
   - Tombstone_TP
   - Stop_Watch
   - Next_Level
+  - Moving_Platform
   layers:
   - Default
   - TransparentFX

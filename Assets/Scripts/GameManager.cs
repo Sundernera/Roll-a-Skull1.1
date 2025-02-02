@@ -12,12 +12,12 @@ public class GameManager : MonoBehaviour
 {
     // scripts
     public static GameManager instance;
-    CameraController cameraController;
+    public CameraController cameraController;
     private Ghost[] ghosts;
-    UIScript uiScript;
+    public UIScript uiScript;
 
     //UI
-    [SerializeField] TMP_Text stopWatchTimer;
+    public TMP_Text stopWatchTimer;
 
 
     // Class Variables
@@ -25,11 +25,11 @@ public class GameManager : MonoBehaviour
     bool isSpeedBoosted = false;   
     Rigidbody rb;
     AudioSource audioSource;
-    [SerializeField] float speed;
-    public int score = 5;
+    public float speed;
+    public int score = 0;
     public int health = 3;
-    bool isAlive = true;
-    public bool hasKey = true;
+    public bool isAlive = true;
+    public bool hasKey = false;
     public bool hasWatch = false;
     public bool hasCoffee = false;
     Renderer rend;
@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         cameraController = GameObject.Find("Main Camera").GetComponent<CameraController>();
+        uiScript = GameObject.Find("UIManager").GetComponent<UIScript>();
         audioSource = GetComponent<AudioSource>();
         rend = GetComponent<Renderer>();
         ogColor = rend.material.color;
@@ -172,10 +173,9 @@ public class GameManager : MonoBehaviour
             case "Death":
                 //camera stops following the player if they leave the bounds or fall out
                 health = 0;
+                isAlive = false;
                 GameOver();
-                cameraController.followPlayer = false;
                 gameObject.GetComponent<SphereCollider>().enabled = false;
-                Destroy(gameObject, 2f);
                 uiScript.UpdateUI();
                 audioSource.clip = clips[6];
                 audioSource.Play();
@@ -275,10 +275,8 @@ public class GameManager : MonoBehaviour
                     Debug.Log("I Need To Find My Other Bones Before Leaving");
                 }
                 break;
-
         }
     }
-
 
     private void OnTriggerStay(Collider other)
     {

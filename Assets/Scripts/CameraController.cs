@@ -1,11 +1,14 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     public static CameraController instance;
+    GameManager gameManager;
     [SerializeField] GameObject player;
     public Vector3 offset;
     public bool followPlayer = true;
+    Vector3 lastPos;
 
     private void Awake()
     {
@@ -22,7 +25,10 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        offset = transform.position - player.transform.position; 
+        player = GameObject.Find("Player Variant");
+        gameManager = player.GetComponent<GameManager>();
+        offset = transform.position - player.transform.position;
+        lastPos = transform.position;
     }
 
     void Update()
@@ -30,7 +36,10 @@ public class CameraController : MonoBehaviour
         if (followPlayer && player != null)
         {
             transform.position = player.transform.position + offset;
-        
+        }
+        if (!gameManager.isAlive)
+        {
+            transform.position = lastPos;
         }
     }
 }

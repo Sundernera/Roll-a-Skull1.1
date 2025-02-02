@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
 {
-    GameManager gameManager;
+    [SerializeField] GameManager gameManager;
 
     public static UIScript instance;
     [SerializeField] SoundManager soundManager;
@@ -35,6 +35,11 @@ public class UIScript : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        gameManager.speed = 0;
+    }
+
     private void Update()
     {
         if (isGameRunning)
@@ -54,6 +59,9 @@ public class UIScript : MonoBehaviour
                 mainMenuUI.SetActive(false);
                 gameplayUI.SetActive(true);
                 isGameRunning = true;
+                gameManager.speed = 5;
+                gameManager.gameObject.transform.position =  new Vector3(24.6f, 0.9f, -21.16f);
+                UpdateUI();
                 break;
             case "RulesButton":
                 break;
@@ -78,6 +86,7 @@ public class UIScript : MonoBehaviour
         switch (gameManager.health)
         {
             case 0:
+                healthStage.sprite = health[0];
                 break;
             case 1:
                 healthStage.sprite = health[0];
