@@ -236,6 +236,10 @@ public class GameManager : MonoBehaviour
                     gameObject.transform.position = new Vector3(5.97991943f, 0.855957031f, -18.7200012f);
                     rb.linearVelocity = Vector3.zero;
                     rb.angularVelocity = Vector3.zero;
+                    score = 0;
+                    health = 3;
+                    hasKey = false;
+                    hasWatch = false;
                 }
                 else
                 {
