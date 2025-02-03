@@ -64,11 +64,13 @@ public class UIScript : MonoBehaviour
                 UpdateUI();
                 break;
             case "RulesButton":
+                rulesUI.SetActive(true);
                 break;
             case "ExitButton":
                 Application.Quit();
                 break;
             case "CloseRules":
+                rulesUI.SetActive(false);
                 break;
         }
     }
