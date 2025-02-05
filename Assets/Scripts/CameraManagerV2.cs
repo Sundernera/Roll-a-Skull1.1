@@ -38,7 +38,7 @@ public class CameraManagerV2 : MonoBehaviour
         }
         else
         {
-            transform.position = offset;
+            transform.position = transform.position;
         }
     }
 }

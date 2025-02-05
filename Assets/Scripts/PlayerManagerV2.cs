@@ -7,7 +7,7 @@ public class PlayerManagerV2 : MonoBehaviour
     Rigidbody rb;
     Renderer rend;
     Color ogColor;
-    float speed = 5f;
+    public float speed = 5f;
     public bool isAlive = true;
 
 
@@ -50,17 +50,20 @@ public class PlayerManagerV2 : MonoBehaviour
                 GameManagerV2.instance.score++;
                 Destroy(other.gameObject);
                 UIManagerV2.instance.UpdateUI();
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[3]);
                 break;
             case "Ghost":
                 if (isAlive)
                 {
                     GameManagerV2.instance.health--;
                     UIManagerV2.instance.UpdateUI();
+                    SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[2]);
                     if (GameManagerV2.instance.health <= 0)
                     {
                         isAlive = false;
                         speed = 0;
                         rb.linearVelocity = Vector3.zero;
+                        UIManagerV2.instance.isGameRunning = false;
                     }
                 }
                 break;
@@ -70,6 +73,7 @@ public class PlayerManagerV2 : MonoBehaviour
                     GameManagerV2.instance.health++;
                     Destroy(other.gameObject);
                     UIManagerV2.instance.UpdateUI();
+                    SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[8]);
                 }
                 break;
             case "Death":
@@ -78,13 +82,17 @@ public class PlayerManagerV2 : MonoBehaviour
                 speed = 0;
                 rb.linearVelocity = Vector3.zero;
                 gameObject.GetComponent<SphereCollider>().enabled = false;
+                CameraManagerV2.instance.followPlayer = false;
+                UIManagerV2.instance.isGameRunning = false;
                 UIManagerV2.instance.UpdateUI();
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[13]);
                 break;
             case "Lock":
                 if (GameManagerV2.instance.hasKey)
                 {
                     GameManagerV2.instance.hasKey = false;
                     Destroy(other.gameObject);
+                    SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[11]);
                 }
                 else
                 {
@@ -95,6 +103,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 GameManagerV2.instance.hasKey = true;
                 Destroy(other.gameObject);
                 UIManagerV2.instance.UpdateUI();
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[7]);
                 break;
             case "Left_Door_Enter":
                 rb.linearVelocity = Vector3.zero;
@@ -102,6 +111,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 CameraManagerV2.instance.followPlayer = false;
                 CameraManagerV2.instance.transform.position = new Vector3(-135.7f, 24f, 15f);
                 CameraManagerV2.instance.transform.rotation = Quaternion.Euler(90, 0, 0);
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[6]);
                 break;
             case "Right_Door_Enter":
                 rb.linearVelocity = Vector3.zero;
@@ -109,6 +119,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 CameraManagerV2.instance.followPlayer = false;
                 CameraManagerV2.instance.transform.position = new Vector3(-135.7f, 24f, 121.71f);
                 CameraManagerV2.instance.transform.rotation = Quaternion.Euler(90, 0, 0);
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[6]);
                 break;
             case "Left_Door_Exit":
                 rb.linearVelocity = Vector3.zero;
@@ -116,6 +127,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 CameraManagerV2.instance.followPlayer = true;
                 CameraManagerV2.instance.transform.position = new Vector3(14f, 12f, 50f);
                 CameraManagerV2.instance.transform.rotation = Quaternion.Euler(45, 0, 0);
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[6]);
                 break;
             case "Right_Door_Exit":
                 rb.linearVelocity = Vector3.zero;
@@ -123,6 +135,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 CameraManagerV2.instance.followPlayer = true;
                 CameraManagerV2.instance.transform.position = new Vector3(35f, 12f, 56.8f);
                 CameraManagerV2.instance.transform.rotation = Quaternion.Euler(45, 0, 0);
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[6]);
                 break;
             case "Tombstone_TP":
                 rb.linearVelocity = Vector3.zero;
@@ -132,21 +145,26 @@ public class PlayerManagerV2 : MonoBehaviour
                 GameManagerV2.instance.hasWatch = true;
                 Destroy(other.gameObject);
                 UIManagerV2.instance.UpdateUI();
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[4]);
                 break;
             case "Bear_Trap":
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[5]);
                 break;
             case "Slime":
                 GetComponent<Renderer>().material.color = Color.green;
                 rb.AddForce(-rb.linearVelocity.normalized * 50f, ForceMode.Acceleration);
                 speed = 2;
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[9]);
                 break;
             case "Spider_Web":
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, 8f, rb.linearVelocity.z);
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[10]);
                 break;
             case "Coffee":
                 GameManagerV2.instance.hasCoffee = true;
                 Destroy(other.gameObject);
                 UIManagerV2.instance.UpdateUI();
+                SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[8]);
                 break;
             case "Next_Level":
                 GameManagerV2.instance.HandleScenes("LevelOne");

@@ -2,15 +2,42 @@ using UnityEngine;
 
 public class SoundManagerV2 : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static SoundManagerV2 instance;
+
+    [SerializeField] AudioSource music;
+    [SerializeField] AudioSource sounds;
+    [SerializeField] public AudioClip[] audioClips;
+
+    private void Awake()
     {
-        
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Start()
     {
-        
+        PlayMusic(audioClips[0]);
+    }
+
+
+    public void PlayMusic(AudioClip clip)
+    {
+        music.clip = clip;
+        music.loop = true;
+        music.Play();
+    }
+
+
+    public void PlaySfX(AudioClip clip)
+    {
+        sounds.PlayOneShot(clip);
     }
 }

@@ -7,12 +7,13 @@ public class UIManagerV2 : MonoBehaviour
 {
     public static UIManagerV2 instance;
 
-    bool isGameRunning = false;
+    public bool isGameRunning = false;
     float elapsedTime = 0f;
 
     [SerializeField] GameObject mainMenuUI;
     [SerializeField] GameObject gameplayUI;
     [SerializeField] GameObject rulesUI;
+    [SerializeField] public GameObject stopWatchTimer;
     [SerializeField] Image healthStage;
     [SerializeField] Image watchStage;
     [SerializeField] Image coffeeStage;
@@ -20,6 +21,7 @@ public class UIManagerV2 : MonoBehaviour
     [SerializeField] Sprite[] health;
     [SerializeField] TMP_Text boneCounterTXT;
     [SerializeField] TMP_Text gameTimerTXT;
+    [SerializeField] public TMP_Text stopWatchTimerTXT;
 
 
     private void Awake()
@@ -105,12 +107,14 @@ public class UIManagerV2 : MonoBehaviour
         if (GameManagerV2.instance.hasWatch)
         {
             Color color = watchStage.color;
-            color.a = 1f;
+            color.a = Mathf.Clamp01(1f);
+            watchStage.color = color;
         }
         else
         {
             Color color = watchStage.color;
-            color.a = .3f;
+            color.a = Mathf.Clamp01(.2f);
+            watchStage.color = color;
         }
     }
 
@@ -120,12 +124,14 @@ public class UIManagerV2 : MonoBehaviour
         if(GameManagerV2.instance.hasCoffee)
         {
             Color color = coffeeStage.color;
-            color.a = 1f;
+            color.a = Mathf.Clamp01(1f);
+            coffeeStage.color = color;
         }
         else
         {
             Color color = coffeeStage.color;
-            color.a= .3f;
+            color.a = Mathf.Clamp01(.2f);
+            coffeeStage.color = color;
         }
     }
 
@@ -135,12 +141,14 @@ public class UIManagerV2 : MonoBehaviour
         if (GameManagerV2.instance.hasKey)
         {
             Color color = keyStage.color;
-            color.a = 1f;
+            color.a = Mathf.Clamp01(1f);
+            keyStage.color = color;
         }
         else
         {
             Color color = keyStage.color;
-            color.a = .3f;
+            color.a = Mathf.Clamp01(.2f);
+            keyStage.color = color;
         }    
     }
 
