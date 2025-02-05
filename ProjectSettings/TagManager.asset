@@ -20,6 +20,7 @@ TagManager:
   - Stop_Watch
   - Next_Level
   - Moving_Platform
+  - Coffee
   layers:
   - Default
   - TransparentFX
