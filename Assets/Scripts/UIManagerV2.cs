@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using NUnit.Framework.Constraints;
+using System.Collections;
 
 public class UIManagerV2 : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class UIManagerV2 : MonoBehaviour
     [SerializeField] GameObject mainMenuUI;
     [SerializeField] GameObject gameplayUI;
     [SerializeField] GameObject rulesUI;
+    [SerializeField] GameObject fadeInUI;
+    [SerializeField] GameObject fadeOutUI;
+    [SerializeField] public GameObject findMoreBonesUI;
     [SerializeField] public GameObject bearTrapUI;
     [SerializeField] public GameObject gameWinUI;
     [SerializeField] public GameObject gameOverUI;
@@ -178,6 +182,14 @@ public class UIManagerV2 : MonoBehaviour
         int milliseconds = Mathf.FloorToInt((elapsedTime * 1000) % 1000);
 
         gameTimerTXT.text = string.Format("{0:00}:{1:00}:{2:000}", minutes, seconds, milliseconds);
+    }
+
+
+    public IEnumerator ShowMoreBonesUI()
+    {
+        findMoreBonesUI.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        findMoreBonesUI.SetActive(false);
     }
 }
 

@@ -181,8 +181,18 @@ public class PlayerManagerV2 : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("I need to find more bones");
+                    StartCoroutine(UIManagerV2.instance.ShowMoreBonesUI());
                 }
+                break;
+            case "Back_To_Tombstone":
+                transform.position = new Vector3(43.81f, 0.76f, -32.88f);
+                break;
+            case "End_Game":
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                speed = 0;
+                UIManagerV2.instance.gameWinUI.SetActive(true);
+                UIManagerV2.instance.isGameRunning = false;
                 break;
         }
     }

@@ -22,6 +22,8 @@ TagManager:
   - Moving_Platform
   - Coffee
   - Bear_Trap
+  - Back_To_Tombstone
+  - End_Game
   layers:
   - Default
   - TransparentFX
