@@ -13,7 +13,11 @@ public class UIManagerV2 : MonoBehaviour
     [SerializeField] GameObject mainMenuUI;
     [SerializeField] GameObject gameplayUI;
     [SerializeField] GameObject rulesUI;
+    [SerializeField] public GameObject bearTrapUI;
+    [SerializeField] public GameObject gameWinUI;
+    [SerializeField] public GameObject gameOverUI;
     [SerializeField] public GameObject stopWatchTimer;
+    [SerializeField] public Slider progressBar;
     [SerializeField] Image healthStage;
     [SerializeField] Image watchStage;
     [SerializeField] Image coffeeStage;
@@ -68,6 +72,20 @@ public class UIManagerV2 : MonoBehaviour
             case "CloseRules":
                 rulesUI.SetActive(false);
                 break;
+            case "Replay":
+                GameManagerV2.instance.HandleScenes("MainMenu");
+                gameOverUI.SetActive(false);
+                gameWinUI.SetActive(false);
+                isGameRunning = true;
+                elapsedTime = 0;
+                GameManagerV2.instance.RestartGame();
+                PlayerManagerV2.instance.speed = 5;
+                PlayerManagerV2.instance.isAlive = true;
+                PlayerManagerV2.instance.gameObject.GetComponent<SphereCollider>().enabled = true;
+                PlayerManagerV2.instance.gameObject.transform.position = new Vector3(24.6f, 0.6f, -21f);
+                CameraManagerV2.instance.followPlayer = true;
+                UpdateUI();
+                break;
         }
     }   
     
@@ -78,7 +96,7 @@ public class UIManagerV2 : MonoBehaviour
         HealthUpdate();
         WatchUpdate();
         CoffeeUpdate();
-        //KeyUpdate();
+        KeyUpdate();
     }
     
 

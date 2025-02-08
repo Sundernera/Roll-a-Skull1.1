@@ -107,4 +107,28 @@ public class GameManagerV2 : MonoBehaviour
         PlayerManagerV2.instance.speed = ogSpeed;
         isSpeedBoosted = false;
     }
+
+
+    public void RestartGame()
+    {
+        hasCoffee = false;
+        hasKey = false;
+        hasWatch = false;
+        health = 3;
+        score = 0;
+    }
+
+
+    public void CheckIfAlive()
+    {
+        if (health == 0)
+        {
+            UIManagerV2.instance.gameOverUI.SetActive(true);
+            PlayerManagerV2.instance.speed = 0;
+            PlayerManagerV2.instance.rb.angularVelocity = Vector3.zero;
+            PlayerManagerV2.instance.rb.linearVelocity = Vector3.zero;
+            UIManagerV2.instance.isGameRunning = false;
+
+        }
+    }
 }

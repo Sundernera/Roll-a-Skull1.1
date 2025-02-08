@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerSkull
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 781f16eac23383a48addb9cea477e550, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -151,3 +155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d9ef3f9eae980540ac5813bfde4a8ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  speed: 5
+  isAlive: 1

@@ -4,12 +4,12 @@ public class PlayerManagerV2 : MonoBehaviour
 {
     public static PlayerManagerV2 instance;
 
-    Rigidbody rb;
+    public Rigidbody rb;
     Renderer rend;
     Color ogColor;
     public float speed = 5f;
     public bool isAlive = true;
-
+    bool isFrozen = false;
 
     private void Awake()
     {
@@ -35,10 +35,13 @@ public class PlayerManagerV2 : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float vertical = Input.GetAxis("Vertical");
-        float horizontal = Input.GetAxis("Horizontal");
-        Vector3 movement = new Vector3(horizontal, 0, vertical);
-        rb.AddForce(speed * movement);
+        if (!isFrozen)
+        {
+            float vertical = Input.GetAxis("Vertical");
+            float horizontal = Input.GetAxis("Horizontal");
+            Vector3 movement = new Vector3(horizontal, 0, vertical);
+            rb.AddForce(speed * movement);
+        }
     }
 
 
@@ -58,13 +61,7 @@ public class PlayerManagerV2 : MonoBehaviour
                     GameManagerV2.instance.health--;
                     UIManagerV2.instance.UpdateUI();
                     SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[2]);
-                    if (GameManagerV2.instance.health <= 0)
-                    {
-                        isAlive = false;
-                        speed = 0;
-                        rb.linearVelocity = Vector3.zero;
-                        UIManagerV2.instance.isGameRunning = false;
-                    }
+                    GameManagerV2.instance.CheckIfAlive();
                 }
                 break;
             case "Health_Up":
@@ -82,6 +79,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 speed = 0;
                 rb.linearVelocity = Vector3.zero;
                 gameObject.GetComponent<SphereCollider>().enabled = false;
+                GameManagerV2.instance.CheckIfAlive();
                 CameraManagerV2.instance.followPlayer = false;
                 UIManagerV2.instance.isGameRunning = false;
                 UIManagerV2.instance.UpdateUI();
@@ -93,6 +91,7 @@ public class PlayerManagerV2 : MonoBehaviour
                     GameManagerV2.instance.hasKey = false;
                     Destroy(other.gameObject);
                     SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[11]);
+                    UIManagerV2.instance.UpdateUI();
                 }
                 else
                 {
@@ -107,6 +106,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 break;
             case "Left_Door_Enter":
                 rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
                 gameObject.transform.position = new Vector3(-135.3f, 0.6f, 7f);
                 CameraManagerV2.instance.followPlayer = false;
                 CameraManagerV2.instance.transform.position = new Vector3(-135.7f, 24f, 15f);
@@ -115,6 +115,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 break;
             case "Right_Door_Enter":
                 rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
                 gameObject.transform.position = new Vector3(-135.3f, 0.6f, 114f);
                 CameraManagerV2.instance.followPlayer = false;
                 CameraManagerV2.instance.transform.position = new Vector3(-135.7f, 24f, 121.71f);
@@ -123,6 +124,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 break;
             case "Left_Door_Exit":
                 rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
                 gameObject.transform.position = new Vector3(14f, 4f, 56.85f);
                 CameraManagerV2.instance.followPlayer = true;
                 CameraManagerV2.instance.transform.position = new Vector3(14f, 12f, 50f);
@@ -131,6 +133,7 @@ public class PlayerManagerV2 : MonoBehaviour
                 break;
             case "Right_Door_Exit":
                 rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
                 gameObject.transform.position = new Vector3(35f, 4f, 56.8f);
                 CameraManagerV2.instance.followPlayer = true;
                 CameraManagerV2.instance.transform.position = new Vector3(35f, 12f, 56.8f);
@@ -148,6 +151,11 @@ public class PlayerManagerV2 : MonoBehaviour
                 SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[4]);
                 break;
             case "Bear_Trap":
+                GameManagerV2.instance.health--;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                UIManagerV2.instance.UpdateUI();
+                GameManagerV2.instance.CheckIfAlive();
                 SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[5]);
                 break;
             case "Slime":
@@ -167,7 +175,14 @@ public class PlayerManagerV2 : MonoBehaviour
                 SoundManagerV2.instance.PlaySfX(SoundManagerV2.instance.audioClips[8]);
                 break;
             case "Next_Level":
-                GameManagerV2.instance.HandleScenes("LevelOne");
+                if (GameManagerV2.instance.score == 5)
+                {
+                    GameManagerV2.instance.HandleScenes("LevelOne");
+                }
+                else
+                {
+                    Debug.Log("I need to find more bones");
+                }
                 break;
         }
     }
@@ -187,5 +202,17 @@ public class PlayerManagerV2 : MonoBehaviour
     void ResetColor()
     {
         rend.material.color = ogColor;
+    }
+
+
+    public void FreezeMovement()
+    {
+        isFrozen = true;
+    }
+
+
+    public void UnfreezeMovement()
+    {
+        isFrozen = false;
     }
 }

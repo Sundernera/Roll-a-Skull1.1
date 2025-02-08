@@ -21,6 +21,7 @@ TagManager:
   - Next_Level
   - Moving_Platform
   - Coffee
+  - Bear_Trap
   layers:
   - Default
   - TransparentFX
