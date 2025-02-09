@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using NUnit.Framework.Constraints;
 using System.Collections;
+using UnityEditor.SearchService;
+using UnityEngine.SceneManagement;
 
 public class UIManagerV2 : MonoBehaviour
 {
@@ -11,11 +13,9 @@ public class UIManagerV2 : MonoBehaviour
     public bool isGameRunning = false;
     float elapsedTime = 0f;
 
-    [SerializeField] GameObject mainMenuUI;
-    [SerializeField] GameObject gameplayUI;
+    [SerializeField] public GameObject mainMenuUI;
+    [SerializeField] public GameObject gameplayUI;
     [SerializeField] GameObject rulesUI;
-    [SerializeField] GameObject fadeInUI;
-    [SerializeField] GameObject fadeOutUI;
     [SerializeField] public GameObject findMoreBonesUI;
     [SerializeField] public GameObject bearTrapUI;
     [SerializeField] public GameObject gameWinUI;
@@ -30,6 +30,7 @@ public class UIManagerV2 : MonoBehaviour
     [SerializeField] TMP_Text boneCounterTXT;
     [SerializeField] TMP_Text gameTimerTXT;
     [SerializeField] public TMP_Text stopWatchTimerTXT;
+    [SerializeField] Animator anim;
 
 
     private void Awake()
@@ -62,10 +63,6 @@ public class UIManagerV2 : MonoBehaviour
         {
             case "PlayGame":
                 GameManagerV2.instance.HandleScenes("MainMenu");
-                mainMenuUI.SetActive(false);
-                gameplayUI.SetActive(true);
-                isGameRunning = true;
-                UpdateUI();
                 break;
             case "Rules":
                 rulesUI.SetActive(true);
@@ -77,7 +74,9 @@ public class UIManagerV2 : MonoBehaviour
                 rulesUI.SetActive(false);
                 break;
             case "Replay":
-                GameManagerV2.instance.HandleScenes("MainMenu");
+                SceneManager.LoadScene("LevelOne");
+                mainMenuUI.SetActive(false);
+                gameplayUI.SetActive(true);
                 gameOverUI.SetActive(false);
                 gameWinUI.SetActive(false);
                 isGameRunning = true;
@@ -86,13 +85,13 @@ public class UIManagerV2 : MonoBehaviour
                 PlayerManagerV2.instance.speed = 5;
                 PlayerManagerV2.instance.isAlive = true;
                 PlayerManagerV2.instance.gameObject.GetComponent<SphereCollider>().enabled = true;
-                PlayerManagerV2.instance.gameObject.transform.position = new Vector3(24.6f, 0.6f, -21f);
+                PlayerManagerV2.instance.gameObject.transform.position = new Vector3(24.6f, 1f, -21f);
                 CameraManagerV2.instance.followPlayer = true;
                 UpdateUI();
                 break;
         }
-    }   
-    
+    }
+
 
     public void UpdateUI()
     {
@@ -102,7 +101,7 @@ public class UIManagerV2 : MonoBehaviour
         CoffeeUpdate();
         KeyUpdate();
     }
-    
+
 
     void HealthUpdate()
     {
@@ -143,7 +142,7 @@ public class UIManagerV2 : MonoBehaviour
 
     void CoffeeUpdate()
     {
-        if(GameManagerV2.instance.hasCoffee)
+        if (GameManagerV2.instance.hasCoffee)
         {
             Color color = coffeeStage.color;
             color.a = Mathf.Clamp01(1f);
@@ -171,7 +170,7 @@ public class UIManagerV2 : MonoBehaviour
             Color color = keyStage.color;
             color.a = Mathf.Clamp01(.2f);
             keyStage.color = color;
-        }    
+        }
     }
 
 
@@ -190,6 +189,38 @@ public class UIManagerV2 : MonoBehaviour
         findMoreBonesUI.SetActive(true);
         yield return new WaitForSeconds(3f);
         findMoreBonesUI.SetActive(false);
+    }
+
+
+    public IEnumerator sceneTransitonsOne(string scene)
+    {
+        anim.SetTrigger("transTrigger");
+
+        yield return new WaitForSeconds(1.5f);
+
+        SceneManager.LoadScene(scene);
+        mainMenuUI.SetActive(false);
+        gameplayUI.SetActive(true);
+        isGameRunning = true;
+        UpdateUI();
+        SoundManagerV2.instance.PlayMusic(SoundManagerV2.instance.audioClips[1]);
+    }
+
+
+    public IEnumerator sceneTransitonsTwo(string scene)
+    {
+        anim.SetTrigger("transRetrigger");
+        PlayerManagerV2.instance.rb.angularVelocity = Vector3.zero;
+        PlayerManagerV2.instance.rb.linearVelocity = Vector3.zero;
+        PlayerManagerV2.instance.speed = 0f;
+
+        yield return new WaitForSeconds(1.5f);
+
+        SceneManager.LoadScene(scene);
+        PlayerManagerV2.instance.transform.position = new Vector3(5.54f, 1f, -17.71f);
+        PlayerManagerV2.instance.rb.linearVelocity = Vector3.zero;
+        PlayerManagerV2.instance.rb.angularVelocity = Vector3.zero;
+        PlayerManagerV2.instance.speed = 5f;
     }
 }
 

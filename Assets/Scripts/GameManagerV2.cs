@@ -58,15 +58,11 @@ public class GameManagerV2 : MonoBehaviour
     {
         if (sceneName == "MainMenu")
         {
-            SceneManager.LoadScene("LevelOne");
-            SoundManagerV2.instance.PlayMusic(SoundManagerV2.instance.audioClips[1]);
+            StartCoroutine(UIManagerV2.instance.sceneTransitonsOne("LevelOne"));
         }
         if (sceneName == "LevelOne")
         {
-            SceneManager.LoadScene("LevelTwo");
-            PlayerManagerV2.instance.transform.position = new Vector3(5.54f, 1f, -17.71f);
-            PlayerManagerV2.instance.rb.linearVelocity = Vector3.zero;
-            PlayerManagerV2.instance.rb.angularVelocity = Vector3.zero;
+            StartCoroutine(UIManagerV2.instance.sceneTransitonsTwo("LevelTwo"));
         }
     }
 
