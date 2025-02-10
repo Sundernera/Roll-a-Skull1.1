@@ -1,9 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using NUnit.Framework.Constraints;
 using System.Collections;
-using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 
 public class UIManagerV2 : MonoBehaviour
